@@ -1,4 +1,6 @@
 
+from time import time
+
 """************************************************************************************************
 ***************************************************************************************************
 ************************************************************************************************"""
@@ -9,6 +11,9 @@ class STRS_ALG_Result(object):
         self.threshold    = 90
         self.similarity   = 0
         self.similar      = False
+        self.time         = None
+        self.distance     = None
+        self.nos          = None
 
     @property
     def similarity(self):
@@ -36,9 +41,12 @@ class STRS_ALG_Result(object):
 
     def __print(self):
 
-        _txt  = "SIMILAR    : %s\n" % (self.similar,)
-        _txt += "SIMILARITY : %s%%\n" % ("{:.2f}".format(self.similarity))
-        _txt += "THRESHOLD  : %s%%\n" % (self.threshold)
+        _txt  = "SIMILAR         : %s\n" % (self.similar,)
+        _txt += "SIMILARITY      : %s%%\n" % ("{:.2f}".format(self.similarity))
+        _txt += "THRESHOLD       : %s%%\n" % (self.threshold)
+        _txt += "EXECUTION TIME  : %s\n" % (self.time)
+        _txt += "DISTANCE        : %s\n" % (self.distance)
+        _txt += "NR OF SYMBOLS   : %s\n" % (self.nos)
 
         return _txt
 
@@ -69,3 +77,15 @@ class STRS_ALG_Generic(object):
     def compare(self,str1,str2):
 
         raise "Not Implemented"
+
+    def start_time(self):
+
+        self.__start_time = time()
+
+    def end_time(self):
+
+        self.result.time = time() - self.__start_time
+
+    def get_time(self):
+
+        return self.__end_time - self.start_time
