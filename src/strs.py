@@ -6,6 +6,8 @@
 ************************************************************************************************"""
 import os
 import sys
+import string
+import random
 from pprint                    import pprint
 from openpyxl                  import Workbook
 from argparse                  import ArgumentParser
@@ -182,7 +184,16 @@ class STRS(STRS_Arguments):
 
         del _workbook[_workbook.active.title]
 
-        _sheet = _workbook.create_sheet(title="stats")
+        #self.stats_table(woorkbook)
+
+        self.stats_change_rate(woorkbook)
+
+        _workbook.save("stats.xlsx")
+
+
+    def stats_table(self,woorkbook)
+
+        _sheet = woorkbook.create_sheet(title="stats")
 
         #add x axis
         _column = 2
@@ -222,7 +233,15 @@ class STRS(STRS_Arguments):
             _sheet.cell(row=_row,column=1).value = "%s" % (_ALG_MAP[_key].__name__.split("STRS_ALG_")[1].lower(),)
             _row += 1
 
-        _workbook.save("stats.xlsx")
+    def stats_change_rate(self,woorkbook):
+
+        _file = r"..\data\data_1_0.txt"
+
+
+        _new_ch = random.choice(string.ascii_letters)
+
+        print(_new_ch)
+
 
 """************************************************************************************************
 ***************************************************************************************************
