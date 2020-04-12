@@ -1,4 +1,0 @@
-data_1.txt   similar to data_2.txt
-data_2.txt   similar to data_1.txt
-data_3.txt   empty file
-data_4.txt   half of text from data_1.txt and half something else

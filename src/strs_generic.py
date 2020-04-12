@@ -14,6 +14,7 @@ class STRS_ALG_Result(object):
         self.time         = None
         self.distance     = None
         self.nos          = None
+        self.type         = None
 
     @property
     def similarity(self):
@@ -47,6 +48,7 @@ class STRS_ALG_Result(object):
         _txt += "EXECUTION TIME  : %s\n" % (self.time)
         _txt += "DISTANCE        : %s\n" % (self.distance)
         _txt += "NR OF SYMBOLS   : %s\n" % (self.nos)
+        _txt += "ALG TYPE        : %s\n" % (self.type)
 
         return _txt
 
