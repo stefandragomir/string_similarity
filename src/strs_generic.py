@@ -57,7 +57,7 @@ class STRS_ALG_Result(object):
 ************************************************************************************************"""
 class STRS_ALG_Generic(object):
 
-    def __init__(self,debug=True):
+    def __init__(self,debug=False):
 
         self.debug  = debug
         self.result = STRS_ALG_Result()

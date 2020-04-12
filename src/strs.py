@@ -9,6 +9,7 @@ import sys
 import string
 import random
 from pprint                    import pprint
+from copy                      import deepcopy
 from openpyxl                  import Workbook
 from argparse                  import ArgumentParser
 from strs_levenshtein          import STRS_ALG_Levenshtein
@@ -178,22 +179,24 @@ class STRS(STRS_Arguments):
 
     def stats(self):
 
-        _pairs = self.get_data_pairs()
+        
 
         _workbook = Workbook()
 
         del _workbook[_workbook.active.title]
 
-        #self.stats_table(woorkbook)
+        self.stats_table(_workbook)
 
-        self.stats_change_rate(woorkbook)
+        self.stats_change_rate(_workbook)
 
         _workbook.save("stats.xlsx")
 
 
-    def stats_table(self,woorkbook)
+    def stats_table(self,woorkbook):
 
-        _sheet = woorkbook.create_sheet(title="stats")
+        _sheet = woorkbook.create_sheet(title="table")
+
+        _pairs = self.get_data_pairs()
 
         #add x axis
         _column = 2
@@ -235,12 +238,51 @@ class STRS(STRS_Arguments):
 
     def stats_change_rate(self,woorkbook):
 
-        _file = r"..\data\data_1_0.txt"
+        _file     = r"..\data\data_1_0.txt"
+        _data     = ""
+        _new_data = "" 
 
+        _sheet = woorkbook.create_sheet(title="plot")
 
-        _new_ch = random.choice(string.ascii_letters)
+        with open(_file,'r+') as _the_file:
 
-        print(_new_ch)
+            _data = _the_file.read()
+
+        _new_data = deepcopy(_data)
+
+        #add x axis
+        _column = 1
+        for _key in range(len(_ALG_MAP)):
+            _sheet.cell(row=1,column=_column).value = "%s" % (_ALG_MAP[_key].__name__.split("STRS_ALG_")[1].lower(),)
+            _column += 1
+
+        _row = 2
+        for _index in range(len(_data)):
+
+            print("--- %s/%s ---" % (_index,len(_data)))
+
+            _column = 1
+            for _alg_idx in range(len(_ALG_MAP)):
+
+                _result = _ALG_MAP[_alg_idx](self.arguments.debug).compare(_data,_new_data)
+
+                _new_data = self.update_text(_new_data,_index)
+
+                _sheet.cell(row=_row, column=_column).value = float(_result.distance,)
+
+                _column += 1
+
+            _row += 1
+
+    def update_text(self,txt,index):
+
+        _old_ch = txt[index]
+
+        _new_ch = chr(ord(_old_ch) + 1)
+
+        txt = txt[:index] + _new_ch + txt[index+1:]
+
+        return txt
 
 
 """************************************************************************************************
